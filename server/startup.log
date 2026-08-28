@@ -1,0 +1,56 @@
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDatabaseModule dependencies initialized[39m[38;5;3m +65ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +74ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mVillagesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHospitalsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProceduresModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSchemesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHospitalProceduresModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHospitalSchemesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHealthController {/api/v1/health}:[39m[38;5;3m +39ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/health, GET} route[39m[38;5;3m +4ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mVillagesController {/api/v1/villages}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/villages, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/villages, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/villages/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/villages/:id, PATCH} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/villages/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHospitalsController {/api/v1/hospitals}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/search, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProceduresController {/api/v1/procedures}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/procedures, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/procedures, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/procedures/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/procedures/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/procedures/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSchemesController {/api/v1/schemes}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/schemes, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/schemes, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/schemes/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/schemes/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/schemes/:id, DELETE} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHospitalProceduresController {/api/v1/hospitals/:hospitalId/procedures}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/procedures, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/procedures, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/procedures/:procedureId, PATCH} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/procedures/:procedureId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHospitalSchemesController {/api/v1/hospitals/:hospitalId/schemes}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/schemes, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/schemes, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/schemes/:schemeId, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/hospitals/:hospitalId/schemes/:schemeId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 5776  - [39m29/08/2026, 1:07:06 am [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +4ms[39m
