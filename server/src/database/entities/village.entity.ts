@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, Unique } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  Unique,
+} from 'typeorm';
 import type { Relation } from 'typeorm';
 import { Hospital } from './hospital.entity.js';
 
@@ -11,7 +20,8 @@ export class Village {
   @Column({ type: 'varchar', length: 150 }) district!: string;
   @Column({ type: 'varchar', length: 100 }) state!: string;
   @Column({ type: 'boolean', default: true }) isActive!: boolean;
-  @OneToMany(() => Hospital, (hospital) => hospital.village) hospitals!: Relation<Hospital[]>;
+  @OneToMany(() => Hospital, (hospital) => hospital.village)
+  hospitals!: Relation<Hospital[]>;
   @CreateDateColumn({ type: 'timestamptz' }) createdAt!: Date;
   @UpdateDateColumn({ type: 'timestamptz' }) updatedAt!: Date;
 }

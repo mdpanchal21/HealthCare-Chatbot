@@ -1,2 +1,75 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'; import { InjectRepository } from '@nestjs/typeorm'; import { Repository } from 'typeorm'; import { Scheme } from '../../database/entities/scheme.entity.js'; import { Pagination, paged } from '../../common/pagination.js';
-@Injectable() export class SchemesService { constructor(@InjectRepository(Scheme) private readonly repository: Repository<Scheme>) {} async create(input: Partial<Scheme>) { try { return { success: true, data: await this.repository.save(this.repository.create(input)) }; } catch { throw new ConflictException({ code: 'SCHEME_ALREADY_EXISTS', message: 'Scheme already exists' }); } } async findAll(query: Pagination & { search?: string; state?: string; active?: boolean }) { const qb = this.repository.createQueryBuilder('s'); if (query.search) qb.andWhere('LOWER(s.name) LIKE LOWER(:search)', { search: `%${query.search}%` }); if (query.state) qb.andWhere('s.state = :state', { state: query.state }); if (query.active !== undefined) qb.andWhere('s.isActive = :active', { active: query.active }); const [data, total] = await qb.skip((query.page - 1) * query.limit).take(query.limit).getManyAndCount(); return paged(data, query.page, query.limit, total); } async findOne(id: string) { const data = await this.repository.findOneBy({ id }); if (!data) throw new NotFoundException({ code: 'SCHEME_NOT_FOUND', message: 'Scheme not found' }); return { success: true, data }; } async update(id: string, input: Partial<Scheme>) { const found = await this.repository.findOneBy({ id }); if (!found) throw new NotFoundException({ code: 'SCHEME_NOT_FOUND', message: 'Scheme not found' }); return { success: true, data: await this.repository.save({ ...found, ...input }) }; } async remove(id: string) { const result = await this.repository.delete(id); if (!result.affected) throw new NotFoundException({ code: 'SCHEME_NOT_FOUND', message: 'Scheme not found' }); return { success: true, data: { id } }; } }
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Scheme } from '../../database/entities/scheme.entity.js';
+import { Pagination, paged } from '../../common/pagination.js';
+@Injectable()
+export class SchemesService {
+  constructor(
+    @InjectRepository(Scheme) private readonly repository: Repository<Scheme>,
+  ) {}
+  async create(input: Partial<Scheme>) {
+    try {
+      return {
+        success: true,
+        data: await this.repository.save(this.repository.create(input)),
+      };
+    } catch {
+      throw new ConflictException({
+        code: 'SCHEME_ALREADY_EXISTS',
+        message: 'Scheme already exists',
+      });
+    }
+  }
+  async findAll(
+    query: Pagination & { search?: string; state?: string; active?: boolean },
+  ) {
+    const qb = this.repository.createQueryBuilder('s');
+    if (query.search)
+      qb.andWhere('LOWER(s.name) LIKE LOWER(:search)', {
+        search: `%${query.search}%`,
+      });
+    if (query.state) qb.andWhere('s.state = :state', { state: query.state });
+    if (query.active !== undefined)
+      qb.andWhere('s.isActive = :active', { active: query.active });
+    const [data, total] = await qb
+      .skip((query.page - 1) * query.limit)
+      .take(query.limit)
+      .getManyAndCount();
+    return paged(data, query.page, query.limit, total);
+  }
+  async findOne(id: string) {
+    const data = await this.repository.findOneBy({ id });
+    if (!data)
+      throw new NotFoundException({
+        code: 'SCHEME_NOT_FOUND',
+        message: 'Scheme not found',
+      });
+    return { success: true, data };
+  }
+  async update(id: string, input: Partial<Scheme>) {
+    const found = await this.repository.findOneBy({ id });
+    if (!found)
+      throw new NotFoundException({
+        code: 'SCHEME_NOT_FOUND',
+        message: 'Scheme not found',
+      });
+    return {
+      success: true,
+      data: await this.repository.save({ ...found, ...input }),
+    };
+  }
+  async remove(id: string) {
+    const result = await this.repository.delete(id);
+    if (!result.affected)
+      throw new NotFoundException({
+        code: 'SCHEME_NOT_FOUND',
+        message: 'Scheme not found',
+      });
+    return { success: true, data: { id } };
+  }
+}

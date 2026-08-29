@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, Unique } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  Unique,
+} from 'typeorm';
 import type { Relation } from 'typeorm';
 import { HospitalScheme } from './hospital-scheme.entity.js';
 
@@ -9,9 +18,12 @@ export class Scheme {
   @PrimaryGeneratedColumn('uuid') id!: string;
   @Column({ type: 'varchar', length: 200 }) name!: string;
   @Column({ type: 'text', nullable: true }) description!: string | null;
-  @Column({ type: 'varchar', length: 100, nullable: true }) state!: string | null;
+  @Column({ type: 'varchar', length: 100, nullable: true }) state!:
+    string | null;
   @Column({ type: 'boolean', default: true }) isActive!: boolean;
-  @OneToMany(() => HospitalScheme, (item) => item.scheme) hospitals!: Relation<HospitalScheme[]>;
+  @OneToMany(() => HospitalScheme, (item) => item.scheme) hospitals!: Relation<
+    HospitalScheme[]
+  >;
   @CreateDateColumn({ type: 'timestamptz' }) createdAt!: Date;
   @UpdateDateColumn({ type: 'timestamptz' }) updatedAt!: Date;
 }

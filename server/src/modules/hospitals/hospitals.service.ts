@@ -1,2 +1,191 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'; import { InjectRepository } from '@nestjs/typeorm'; import { Repository } from 'typeorm'; import { Hospital, HospitalType } from '../../database/entities/hospital.entity.js'; import { HospitalProcedure } from '../../database/entities/hospital-procedure.entity.js'; import { HospitalScheme } from '../../database/entities/hospital-scheme.entity.js'; import { Pagination, paged } from '../../common/pagination.js';
-@Injectable() export class HospitalsService { constructor(@InjectRepository(Hospital) private readonly repository: Repository<Hospital>, @InjectRepository(HospitalProcedure) private readonly procedureRepository: Repository<HospitalProcedure>, @InjectRepository(HospitalScheme) private readonly schemeRepository: Repository<HospitalScheme>) {} async create(input: Partial<Hospital>) { try { return { success: true, data: await this.repository.save(this.repository.create(input)) }; } catch { throw new ConflictException({ code: 'HOSPITAL_ALREADY_EXISTS', message: 'Hospital already exists at this location' }); } } async findAll(query: Pagination & { search?: string; villageId?: string; hospitalType?: HospitalType; emergencyAvailable?: boolean; active?: boolean }) { const qb = this.repository.createQueryBuilder('h').leftJoinAndSelect('h.village', 'v'); if (query.search) qb.andWhere('LOWER(h.name) LIKE LOWER(:search)', { search: `%${query.search}%` }); if (query.villageId) qb.andWhere('h.villageId = :villageId', { villageId: query.villageId }); if (query.hospitalType) qb.andWhere('h.hospitalType = :hospitalType', { hospitalType: query.hospitalType }); if (query.emergencyAvailable !== undefined) qb.andWhere('h.emergencyAvailable = :emergency', { emergency: query.emergencyAvailable }); if (query.active !== undefined) qb.andWhere('h.isActive = :active', { active: query.active }); const [data, total] = await qb.skip((query.page - 1) * query.limit).take(query.limit).getManyAndCount(); return paged(data, query.page, query.limit, total); } async search(query: Pagination & { villageId?: string; procedureId?: string; schemeId?: string; hospitalType?: HospitalType; emergencyAvailable?: boolean; active?: boolean }) { const qb = this.repository.createQueryBuilder('h').leftJoinAndSelect('h.village', 'v').leftJoinAndSelect('h.procedures', 'hp').leftJoinAndSelect('hp.procedure', 'p').leftJoinAndSelect('h.schemes', 'hs').leftJoinAndSelect('hs.scheme', 's'); if (query.villageId) qb.andWhere('h.villageId = :villageId', { villageId: query.villageId }); if (query.procedureId) qb.andWhere('hp.procedureId = :procedureId AND hp.isActive = true', { procedureId: query.procedureId }); if (query.schemeId) qb.andWhere('hs.schemeId = :schemeId AND hs.isAvailable = true', { schemeId: query.schemeId }); if (query.hospitalType) qb.andWhere('h.hospitalType = :hospitalType', { hospitalType: query.hospitalType }); if (query.emergencyAvailable !== undefined) qb.andWhere('h.emergencyAvailable = :emergency', { emergency: query.emergencyAvailable }); if (query.active !== undefined) qb.andWhere('h.isActive = :active', { active: query.active }); const [rows, total] = await qb.skip((query.page - 1) * query.limit).take(query.limit).getManyAndCount(); const data = rows.map((hospital) => ({ id: hospital.id, name: hospital.name, village: hospital.village && { id: hospital.village.id, name: hospital.village.name }, phone: hospital.phone, emergencyAvailable: hospital.emergencyAvailable, ambulanceAvailable: hospital.ambulanceAvailable, icuAvailable: hospital.icuAvailable, procedure: hospital.procedures?.find((item) => item.procedureId === query.procedureId)?.procedure && { id: hospital.procedures.find((item) => item.procedureId === query.procedureId)!.procedure.id, name: hospital.procedures.find((item) => item.procedureId === query.procedureId)!.procedure.name, priceMin: hospital.procedures.find((item) => item.procedureId === query.procedureId)!.priceMin, priceMax: hospital.procedures.find((item) => item.procedureId === query.procedureId)!.priceMax }, schemes: hospital.schemes?.map((item) => ({ name: item.scheme.name, isAvailable: item.isAvailable })) })); return paged(data, query.page, query.limit, total); } async findOne(id: string) { const data = await this.repository.findOne({ where: { id }, relations: { village: true, procedures: { procedure: true }, schemes: { scheme: true } } }); if (!data) throw new NotFoundException({ code: 'HOSPITAL_NOT_FOUND', message: 'Hospital not found' }); return { success: true, data }; } async update(id: string, input: Partial<Hospital>) { const found = await this.repository.findOneBy({ id }); if (!found) throw new NotFoundException({ code: 'HOSPITAL_NOT_FOUND', message: 'Hospital not found' }); try { return { success: true, data: await this.repository.save({ ...found, ...input }) }; } catch { throw new ConflictException({ code: 'HOSPITAL_ALREADY_EXISTS', message: 'Hospital already exists at this location' }); } } async remove(id: string) { const result = await this.repository.delete(id); if (!result.affected) throw new NotFoundException({ code: 'HOSPITAL_NOT_FOUND', message: 'Hospital not found' }); return { success: true, data: { id } }; } }
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import {
+  Hospital,
+  HospitalType,
+} from '../../database/entities/hospital.entity.js';
+import { HospitalProcedure } from '../../database/entities/hospital-procedure.entity.js';
+import { HospitalScheme } from '../../database/entities/hospital-scheme.entity.js';
+import { Pagination, paged } from '../../common/pagination.js';
+@Injectable()
+export class HospitalsService {
+  constructor(
+    @InjectRepository(Hospital)
+    private readonly repository: Repository<Hospital>,
+    @InjectRepository(HospitalProcedure)
+    private readonly procedureRepository: Repository<HospitalProcedure>,
+    @InjectRepository(HospitalScheme)
+    private readonly schemeRepository: Repository<HospitalScheme>,
+  ) {}
+  async create(input: Partial<Hospital>) {
+    try {
+      return {
+        success: true,
+        data: await this.repository.save(this.repository.create(input)),
+      };
+    } catch {
+      throw new ConflictException({
+        code: 'HOSPITAL_ALREADY_EXISTS',
+        message: 'Hospital already exists at this location',
+      });
+    }
+  }
+  async findAll(
+    query: Pagination & {
+      search?: string;
+      villageId?: string;
+      hospitalType?: HospitalType;
+      emergencyAvailable?: boolean;
+      active?: boolean;
+    },
+  ) {
+    const qb = this.repository
+      .createQueryBuilder('h')
+      .leftJoinAndSelect('h.village', 'v');
+    if (query.search)
+      qb.andWhere('LOWER(h.name) LIKE LOWER(:search)', {
+        search: `%${query.search}%`,
+      });
+    if (query.villageId)
+      qb.andWhere('h.villageId = :villageId', { villageId: query.villageId });
+    if (query.hospitalType)
+      qb.andWhere('h.hospitalType = :hospitalType', {
+        hospitalType: query.hospitalType,
+      });
+    if (query.emergencyAvailable !== undefined)
+      qb.andWhere('h.emergencyAvailable = :emergency', {
+        emergency: query.emergencyAvailable,
+      });
+    if (query.active !== undefined)
+      qb.andWhere('h.isActive = :active', { active: query.active });
+    const [data, total] = await qb
+      .skip((query.page - 1) * query.limit)
+      .take(query.limit)
+      .getManyAndCount();
+    return paged(data, query.page, query.limit, total);
+  }
+  async search(
+    query: Pagination & {
+      villageId?: string;
+      procedureId?: string;
+      schemeId?: string;
+      hospitalType?: HospitalType;
+      emergencyAvailable?: boolean;
+      active?: boolean;
+    },
+  ) {
+    const qb = this.repository
+      .createQueryBuilder('h')
+      .leftJoinAndSelect('h.village', 'v')
+      .leftJoinAndSelect('h.procedures', 'hp')
+      .leftJoinAndSelect('hp.procedure', 'p')
+      .leftJoinAndSelect('h.schemes', 'hs')
+      .leftJoinAndSelect('hs.scheme', 's');
+    if (query.villageId)
+      qb.andWhere('h.villageId = :villageId', { villageId: query.villageId });
+    if (query.procedureId)
+      qb.andWhere('hp.procedureId = :procedureId AND hp.isActive = true', {
+        procedureId: query.procedureId,
+      });
+    if (query.schemeId)
+      qb.andWhere('hs.schemeId = :schemeId AND hs.isAvailable = true', {
+        schemeId: query.schemeId,
+      });
+    if (query.hospitalType)
+      qb.andWhere('h.hospitalType = :hospitalType', {
+        hospitalType: query.hospitalType,
+      });
+    if (query.emergencyAvailable !== undefined)
+      qb.andWhere('h.emergencyAvailable = :emergency', {
+        emergency: query.emergencyAvailable,
+      });
+    if (query.active !== undefined)
+      qb.andWhere('h.isActive = :active', { active: query.active });
+    const [rows, total] = await qb
+      .skip((query.page - 1) * query.limit)
+      .take(query.limit)
+      .getManyAndCount();
+    const data = rows.map((hospital) => ({
+      id: hospital.id,
+      name: hospital.name,
+      village: hospital.village && {
+        id: hospital.village.id,
+        name: hospital.village.name,
+      },
+      phone: hospital.phone,
+      emergencyAvailable: hospital.emergencyAvailable,
+      ambulanceAvailable: hospital.ambulanceAvailable,
+      icuAvailable: hospital.icuAvailable,
+      procedure: hospital.procedures?.find(
+        (item) => item.procedureId === query.procedureId,
+      )?.procedure && {
+        id: hospital.procedures.find(
+          (item) => item.procedureId === query.procedureId,
+        )!.procedure.id,
+        name: hospital.procedures.find(
+          (item) => item.procedureId === query.procedureId,
+        )!.procedure.name,
+        priceMin: hospital.procedures.find(
+          (item) => item.procedureId === query.procedureId,
+        )!.priceMin,
+        priceMax: hospital.procedures.find(
+          (item) => item.procedureId === query.procedureId,
+        )!.priceMax,
+      },
+      schemes: hospital.schemes?.map((item) => ({
+        name: item.scheme.name,
+        isAvailable: item.isAvailable,
+      })),
+    }));
+    return paged(data, query.page, query.limit, total);
+  }
+  async findOne(id: string) {
+    const data = await this.repository.findOne({
+      where: { id },
+      relations: {
+        village: true,
+        procedures: { procedure: true },
+        schemes: { scheme: true },
+      },
+    });
+    if (!data)
+      throw new NotFoundException({
+        code: 'HOSPITAL_NOT_FOUND',
+        message: 'Hospital not found',
+      });
+    return { success: true, data };
+  }
+  async update(id: string, input: Partial<Hospital>) {
+    const found = await this.repository.findOneBy({ id });
+    if (!found)
+      throw new NotFoundException({
+        code: 'HOSPITAL_NOT_FOUND',
+        message: 'Hospital not found',
+      });
+    try {
+      return {
+        success: true,
+        data: await this.repository.save({ ...found, ...input }),
+      };
+    } catch {
+      throw new ConflictException({
+        code: 'HOSPITAL_ALREADY_EXISTS',
+        message: 'Hospital already exists at this location',
+      });
+    }
+  }
+  async remove(id: string) {
+    const result = await this.repository.delete(id);
+    if (!result.affected)
+      throw new NotFoundException({
+        code: 'HOSPITAL_NOT_FOUND',
+        message: 'Hospital not found',
+      });
+    return { success: true, data: { id } };
+  }
+}

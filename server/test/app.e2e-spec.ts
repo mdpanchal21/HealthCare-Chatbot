@@ -6,7 +6,21 @@ import { AppModule } from './../src/app.module.js';
 
 describe('Health endpoint (e2e)', () => {
   let app: INestApplication<App>;
-  beforeEach(async () => { const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [AppModule] }).compile(); app = moduleFixture.createNestApplication(); app.setGlobalPrefix('api/v1'); await app.init(); });
-  it('/api/v1/health (GET)', () => request(app.getHttpServer()).get('/api/v1/health').expect(200).expect({ success: true, data: { status: 'ok', service: 'healthcare-hospital-discovery-api' } }));
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+    app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix('api/v1');
+    await app.init();
+  });
+  it('/api/v1/health (GET)', () =>
+    request(app.getHttpServer())
+      .get('/api/v1/health')
+      .expect(200)
+      .expect({
+        success: true,
+        data: { status: 'ok', service: 'healthcare-hospital-discovery-api' },
+      }));
   afterEach(async () => app.close());
 });

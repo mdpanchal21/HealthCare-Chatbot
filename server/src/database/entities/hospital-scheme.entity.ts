@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
 import type { Relation } from 'typeorm';
 import { Hospital } from './hospital.entity.js';
 import { Scheme } from './scheme.entity.js';
@@ -8,9 +17,17 @@ import { Scheme } from './scheme.entity.js';
 export class HospitalScheme {
   @PrimaryGeneratedColumn('uuid') id!: string;
   @Column({ type: 'uuid' }) hospitalId!: string;
-  @ManyToOne(() => Hospital, (hospital) => hospital.schemes, { onDelete: 'CASCADE' }) @JoinColumn({ name: 'hospitalId' }) hospital!: Relation<Hospital>;
+  @ManyToOne(() => Hospital, (hospital) => hospital.schemes, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'hospitalId' })
+  hospital!: Relation<Hospital>;
   @Column({ type: 'uuid' }) schemeId!: string;
-  @ManyToOne(() => Scheme, (scheme) => scheme.hospitals, { onDelete: 'CASCADE' }) @JoinColumn({ name: 'schemeId' }) scheme!: Relation<Scheme>;
+  @ManyToOne(() => Scheme, (scheme) => scheme.hospitals, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'schemeId' })
+  scheme!: Relation<Scheme>;
   @Column({ type: 'boolean', default: false }) isAvailable!: boolean;
   @Column({ type: 'text', nullable: true }) notes!: string | null;
   @CreateDateColumn({ type: 'timestamptz' }) createdAt!: Date;

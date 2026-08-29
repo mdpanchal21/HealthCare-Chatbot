@@ -9,5 +9,26 @@ import { Scheme } from './entities/scheme.entity.js';
 import { Village } from './entities/village.entity.js';
 
 const environment = getEnvironment();
-@Module({ imports: [TypeOrmModule.forRoot({ type: 'postgres', host: environment.DATABASE_HOST, port: environment.DATABASE_PORT, username: environment.DATABASE_USERNAME, password: environment.DATABASE_PASSWORD, database: environment.DATABASE_NAME, entities: [Village, Hospital, Procedure, HospitalProcedure, Scheme, HospitalScheme], migrationsRun: false, synchronize: false })] })
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: environment.DATABASE_HOST,
+      port: environment.DATABASE_PORT,
+      username: environment.DATABASE_USERNAME,
+      password: environment.DATABASE_PASSWORD,
+      database: environment.DATABASE_NAME,
+      entities: [
+        Village,
+        Hospital,
+        Procedure,
+        HospitalProcedure,
+        Scheme,
+        HospitalScheme,
+      ],
+      migrationsRun: false,
+      synchronize: false,
+    }),
+  ],
+})
 export class DatabaseModule {}
