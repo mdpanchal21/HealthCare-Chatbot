@@ -12,8 +12,24 @@ export class ChatbotService {
 
   async chat(message: string) {
     const intentData = await this.aiService.extractIntent(message);
-
     let result;
+
+    if (
+      intentData.intent === 'GENERAL_QUERY' ||
+      intentData.intent === 'UNKNOWN'
+    ) {
+      const answer = await this.aiService.generateAnswer(
+        message,
+        intentData,
+        [],
+      );
+
+      return {
+        success: true,
+        intent: intentData.intent,
+        answer,
+      };
+    }
 
     switch (intentData.intent) {
       case ChatIntent.FIND_HOSPITAL:
@@ -50,14 +66,17 @@ export class ChatbotService {
         };
     }
 
+    const answer = await this.aiService.generateAnswer(
+      message,
+      intentData,
+      result,
+    );
+
     return {
       success: true,
-
       intent: intentData.intent,
-
       query: intentData,
-
-      data: result,
+      answer,
     };
   }
 }

@@ -59,13 +59,9 @@ ambulanceAvailable
 
 Rules:
 
-1. Return null when a field is not mentioned or cannot be determined.
-2. Do not invent information.
-3. intent must be exactly one of the available intents.
-4. emergencyAvailable, icuAvailable, and ambulanceAvailable must be
-   true, false, or null.
-5. Extract location information when explicitly mentioned.
-6. Return only JSON matching the provided schema.
+1. Only include fields that are explicitly mentioned or can be reliably determined from the user's message.
+2. Do not include unused fields.
+3. Never invent information.
 `;
 
     const result = await this.model.generateContent({
@@ -95,61 +91,60 @@ Rules:
                 'UNKNOWN',
               ],
             },
+
             hospitalName: {
               type: SchemaType.STRING,
               nullable: true,
             },
+
             procedureName: {
               type: SchemaType.STRING,
               nullable: true,
             },
+
             schemeName: {
               type: SchemaType.STRING,
               nullable: true,
             },
+
             village: {
               type: SchemaType.STRING,
               nullable: true,
             },
+
             district: {
               type: SchemaType.STRING,
               nullable: true,
             },
+
             state: {
               type: SchemaType.STRING,
               nullable: true,
             },
+
             emergencyAvailable: {
               type: SchemaType.BOOLEAN,
               nullable: true,
             },
+
             icuAvailable: {
               type: SchemaType.BOOLEAN,
               nullable: true,
             },
+
             ambulanceAvailable: {
               type: SchemaType.BOOLEAN,
               nullable: true,
             },
           },
-          required: [
-            'intent',
-            'hospitalName',
-            'procedureName',
-            'schemeName',
-            'village',
-            'district',
-            'state',
-            'emergencyAvailable',
-            'icuAvailable',
-            'ambulanceAvailable',
-          ],
+
+          required: ['intent'],
         },
       },
     });
 
     const content = result.response.text();
-
+    console.log(content);
     if (!content) {
       throw new Error('Gemini returned empty response');
     }
@@ -157,5 +152,63 @@ Rules:
     const parsed = JSON.parse(content);
 
     return ChatIntentSchema.parse(parsed);
+  }
+
+  async generateAnswer(
+    question: string,
+    intentData: ChatIntentData,
+    databaseResult: unknown,
+  ): Promise<string> {
+    const SYSTEM_INSTRUCTION = `You are a friendly hospital information assistant. Turn DATABASE_RESULT into a short, natural answer to USER QUESTION — the way a knowledgeable friend would text it, not a report.
+
+HOW TO WRITE:
+- Talk like a person, not a system. No "Based on the data...", "The following hospitals...", "According to records...".
+- Get to the point in the first sentence.
+- If several hospitals share the same price, say the price once and list the names after it — don't repeat the number per hospital.
+- If prices differ, lead with the cheapest and note the range briefly.
+- Use a short bullet list only when listing 3+ items; otherwise write it as a sentence or two.
+- Never mention JSON, databases, queries, intents, or AI/internal systems.
+- Never invent or assume anything not present in DATABASE_RESULT.
+- Never give medical advice — you're relaying facts, not recommending treatment.
+
+EXAMPLE:
+DATABASE_RESULT: 3 hospitals, cataract surgery, all ₹1,500–₹3,000
+GOOD: "Cataract surgery runs ₹1,500–₹3,000 at Sunrise Hospital, City Care, and Wellness Multispeciality — all in that same range."
+BAD: "The following hospitals offer cataract surgery: Sunrise Hospital (₹1,500-3,000), City Care (₹1,500-3,000), Wellness Multispeciality (₹1,500-3,000)."
+
+IF EMPTY:
+Reply exactly: "I couldn't find a matching result for that — want to try a different hospital, procedure, or location?"
+
+Return only the final answer text.`;
+    const prompt = `
+USER QUESTION:
+${question}
+
+DETECTED INTENT:
+${JSON.stringify(intentData)}
+
+DATABASE RESULT:
+${JSON.stringify(databaseResult)}
+`;
+    const result = await this.model.generateContent({
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              text: prompt,
+            },
+          ],
+        },
+      ],
+
+      systemInstruction: SYSTEM_INSTRUCTION,
+
+      generationConfig: {
+        temperature: 0.1,
+      },
+    });
+
+    return result.response.text();
   }
 }
