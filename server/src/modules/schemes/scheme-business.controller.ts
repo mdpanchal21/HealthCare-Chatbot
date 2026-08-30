@@ -1,3 +1,23 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'; import { ApiOperation, ApiTags } from '@nestjs/swagger'; import { z } from 'zod'; import { paginationSchema } from '../../common/pagination.js'; import { UuidValidationPipe } from '../../common/pipes/uuid-validation.pipe.js'; import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe.js'; import { SchemeBusinessService } from './scheme-business.service.js';
-const querySchema = paginationSchema.extend({ villageId: z.string().uuid().optional() });
-@Controller('schemes') @ApiTags('Scheme business') export class SchemeBusinessController { constructor(private readonly service: SchemeBusinessService) {} @Get(':id/hospitals') @ApiOperation({ summary: 'List hospitals accepting a scheme' }) hospitals(@Param('id', UuidValidationPipe) id: string, @Query(new ZodValidationPipe(querySchema)) query: unknown) { return this.service.hospitals(id, query as never); } }
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { z } from 'zod';
+import { paginationSchema } from '../../common/pagination.js';
+import { UuidValidationPipe } from '../../common/pipes/uuid-validation.pipe.js';
+import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe.js';
+import { SchemeBusinessService } from './scheme-business.service.js';
+const querySchema = paginationSchema.extend({
+  villageId: z.string().uuid().optional(),
+});
+@Controller('schemes')
+@ApiTags('Scheme business')
+export class SchemeBusinessController {
+  constructor(private readonly service: SchemeBusinessService) {}
+  @Get(':id/hospitals')
+  @ApiOperation({ summary: 'List hospitals accepting a scheme' })
+  hospitals(
+    @Param('id', UuidValidationPipe) id: string,
+    @Query(new ZodValidationPipe(querySchema)) query: unknown,
+  ) {
+    return this.service.hospitals(id, query as never);
+  }
+}

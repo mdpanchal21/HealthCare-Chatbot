@@ -10,6 +10,24 @@ import { ProceduresModule } from './modules/procedures/procedures.module.js';
 import { SchemesModule } from './modules/schemes/schemes.module.js';
 import { VillagesModule } from './modules/villages/villages.module.js';
 import { HealthController } from './health.controller.js';
+import { ChatbotModule } from './modules/chatbot/chatbot.module.js';
 
-@Module({ controllers: [HealthController], imports: [ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]), DatabaseModule, VillagesModule, HospitalsModule, ProceduresModule, SchemesModule, HospitalProceduresModule, HospitalSchemesModule], providers: [{ provide: APP_FILTER, useClass: HttpExceptionFilter }, { provide: APP_GUARD, useClass: ThrottlerGuard }] })
+@Module({
+  controllers: [HealthController],
+  imports: [
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
+    DatabaseModule,
+    VillagesModule,
+    HospitalsModule,
+    ProceduresModule,
+    SchemesModule,
+    HospitalProceduresModule,
+    HospitalSchemesModule,
+    ChatbotModule,
+  ],
+  providers: [
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+  ],
+})
 export class AppModule {}

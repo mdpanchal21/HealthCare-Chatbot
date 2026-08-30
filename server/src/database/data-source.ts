@@ -17,7 +17,14 @@ export default new DataSource({
   username: environment.DATABASE_USERNAME,
   password: environment.DATABASE_PASSWORD,
   database: environment.DATABASE_NAME,
-  entities: [Village, Hospital, HospitalProcedure, HospitalScheme, Procedure, Scheme],
+  entities: [
+    Village,
+    Hospital,
+    HospitalProcedure,
+    HospitalScheme,
+    Procedure,
+    Scheme,
+  ],
   migrations: ['src/database/migrations/*.{ts,js}'],
   synchronize: false,
 });

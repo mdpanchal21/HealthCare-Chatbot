@@ -1,2 +1,18 @@
-import { Module } from '@nestjs/common'; import { TypeOrmModule } from '@nestjs/typeorm'; import { HospitalProcedure } from '../../database/entities/hospital-procedure.entity.js'; import { Hospital } from '../../database/entities/hospital.entity.js'; import { Procedure } from '../../database/entities/procedure.entity.js'; import { HospitalProceduresService } from './hospital-procedures.service.js'; import { HospitalProceduresController } from './hospital-procedures.controller.js'; import { HospitalProcedureBusinessService } from './hospital-procedure-business.service.js'; import { HospitalProcedureBusinessController } from './hospital-procedure-business.controller.js';
-@Module({ imports: [TypeOrmModule.forFeature([HospitalProcedure, Hospital, Procedure])], controllers: [HospitalProceduresController, HospitalProcedureBusinessController], providers: [HospitalProceduresService, HospitalProcedureBusinessService] }) export class HospitalProceduresModule {}
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { HospitalProcedure } from '../../database/entities/hospital-procedure.entity.js';
+import { Hospital } from '../../database/entities/hospital.entity.js';
+import { Procedure } from '../../database/entities/procedure.entity.js';
+import { HospitalProceduresService } from './hospital-procedures.service.js';
+import { HospitalProceduresController } from './hospital-procedures.controller.js';
+import { HospitalProcedureBusinessService } from './hospital-procedure-business.service.js';
+import { HospitalProcedureBusinessController } from './hospital-procedure-business.controller.js';
+@Module({
+  imports: [TypeOrmModule.forFeature([HospitalProcedure, Hospital, Procedure])],
+  controllers: [
+    HospitalProceduresController,
+    HospitalProcedureBusinessController,
+  ],
+  providers: [HospitalProceduresService, HospitalProcedureBusinessService],
+})
+export class HospitalProceduresModule {}

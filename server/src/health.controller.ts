@@ -4,6 +4,9 @@ import { Controller, Get } from '@nestjs/common';
 export class HealthController {
   @Get()
   check() {
-    return { success: true, data: { status: 'ok', service: 'healthcare-hospital-discovery-api' } };
+    return {
+      success: true,
+      data: { status: 'ok', service: 'healthcare-hospital-discovery-api' },
+    };
   }
 }
